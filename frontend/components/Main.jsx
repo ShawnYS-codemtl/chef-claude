@@ -8,6 +8,13 @@ export default function Main(){
     const [ingredients, setIngredients] = React.useState([])
 
     const [recipe, setRecipe] = React.useState('')
+    const recipeSection = React.useRef(null)
+
+    React.useEffect(() => {
+        if (recipe !== "" && recipeSection.current != null ){
+            recipeSection.current.scrollIntoView()
+        }
+    }, [recipe])
 
     async function getRecipe(){
         const recipeMarkdown = await getRecipeFromChefClaude(ingredients)
@@ -30,7 +37,7 @@ export default function Main(){
             />
             <button>Add ingredient</button>
         </form>
-        {ingredients.length > 0 && <IngredientsList ingredients={ingredients} getRecipe={getRecipe}/>}
+        {ingredients.length > 0 && <IngredientsList ingredients={ingredients} getRecipe={getRecipe} ref={recipeSection}/>}
         {recipe && <ClaudeRecipe recipe={recipe}/>}
     </main>
     )
